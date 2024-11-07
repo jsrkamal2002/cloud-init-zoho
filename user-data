@@ -1,0 +1,18 @@
+#cloud-config
+#For default user - debian
+password: debian
+chpasswd:
+  expire: False
+
+# User Configuration
+users:
+  - name: rajkamal
+    sudo: ["ALL=(ALL) NOPASSWD:ALL"]
+    groups: sudo
+    shell: /bin/bash
+    passwd: $6$C9WYLiXRjYgQwY0U$LDCi4h6ZFk/zMtvrZ77jmw1pZY.dwcJhu1WdEkG2LO25ijhCQaqqwVyCd7mJcudzagtMhIP06QOdVGpuRSUp1/
+    lock_passwd: false
+    home: /home/rajkamal
+
+# SSH Configuration
+ssh_pwauth: true
