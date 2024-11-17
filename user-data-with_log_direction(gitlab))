@@ -1,0 +1,51 @@
+#cloud-config
+
+#Hostname
+hostname: gitlab
+
+#For default user - debian
+password: debian
+chpasswd:
+  expire: False
+
+# User Configuration
+users:
+  - name: rajkamal
+    sudo: ["ALL=(ALL) NOPASSWD:ALL"]
+    groups: sudo
+    shell: /bin/bash
+    passwd: $6$C9WYLiXRjYgQwY0U$LDCi4h6ZFk/zMtvrZ77jmw1pZY.dwcJhu1WdEkG2LO25ijhCQaqqwVyCd7mJcudzagtMhIP06QOdVGpuRSUp1/
+    lock_passwd: false
+
+# SSH Configuration
+ssh_pwauth: true
+
+# Network area
+network:
+  version: 1
+  config:
+    - type: physical
+      name: enp1s0
+      subnets:
+        - type: dhcp
+
+runcmd:
+  - apt update  ; apt upgrade -y ; apt autoremove -y
+  - curl -fsSL https://get.docker.com | sh
+  - echo "\n==================================" | tee /dev/console
+  - echo "Cloud-init setup completed successfully!" | tee /dev/console
+  - echo "VM is ready to use." | tee /dev/console
+  - echo "==================================\n" | tee /dev/console
+
+output: 
+  all: '| tee -a /var/log/cloud-init-output.log'
+  init: ">> /var/log/cloud-init.log"
+  config: ">> /var/log/cloud-config.log"
+  final: ">> /var/log/cloud-final.log"
+
+final_message: |
+    cloud-init has finished
+    version: ${VERSION}
+    timestamp: ${TIMESTAMP}
+    datasource: ${DATASOURCE}
+    uptime: ${UPTIME}
