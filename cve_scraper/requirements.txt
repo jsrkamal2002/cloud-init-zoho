@@ -1,0 +1,5 @@
+sys
+typing
+beautifulsoup4
+requests
+prettytable
